@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ysd.demo.mapper.RoomReservationMapper">
+	<resultMap type="roomReservation" id="roomReservationMap">
+		<id column="reservationId" property="reservationId"/>
+		<result column="rayamount" property="rayamount"/>
+		<result column="reservaStartTime" property="reservaStartTime"/>
+		<result column="reservaEndTime" property="reservaEndTime"/>
+		<result column="reservaTime" property="reservaTime"/>
+		<result column="reservaName" property="reservaName"/>
+		<result column="reservaCard" property="reservaCard"/>
+		<result column="reservaTel" property="reservaTel"/>
+		<result column="reservastate" property="reservastate"/>
+		<result column="roomId" property="rooms.roomId"/>
+		<result column="roommun" property="rooms.roommun"/>
+	</resultMap>
+	<select id="customizeSelectByRoomReservation" resultMap="roomReservationMap">
+		select rR.*,r.* from roomReservation rR,rooms r
+		${ew.customSqlSegment}
+		and rR.roomId=r.roomId
+		order by rR.reservationId ASC
+	</select>
+</mapper>

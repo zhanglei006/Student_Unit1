@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ysd.demo.mapper.PicturesMapper">
+	<resultMap type="pictures" id="picturesMap">
+		<id column="picturesId" property="picturesId"/>
+		<result column="picturesUrl" property="picturesUrl"/>
+		<result column="roomId" property="roomId"/>
+		<result column="hotelIdPictureid" property="hotelIdPictureid"/>
+		<result column="iszhutu" property="iszhutu"/>
+		<result column="roomId" property="rooms.roomId"/>
+		<result column="roommun" property="rooms.roommun"/>
+	</resultMap>
+	
+	<select id="customizeSelectBypictures" resultMap="picturesMap">
+		select * from pictures p,rooms r
+		${ew.customSqlSegment}
+		and p.roomId=r.roomId
+		order by p.picturesId ASC
+	</select>
+</mapper>

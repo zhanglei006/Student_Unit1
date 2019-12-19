@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ysd.demo.mapper.RoomRuZhuMapper">
+	<resultMap type="roomRuZhu" id="roomRuZhuMap">
+		<id column="roomRuZhuId" property="roomRuZhuId"/>
+		<result column="rayamount" property="rayamount"/>
+		<result column="startTime" property="startTime"/>
+		<result column="endTime" property="endTime"/>
+		<result column="ruZhuName" property="ruZhuName"/>
+		<result column="ruZhuCard" property="ruZhuCard"/>
+		<result column="peoplenum" property="peoplenum"/>
+		<result column="roomId" property="rooms.roomId"/>
+		<result column="roommun" property="rooms.roommun"/>
+		<result column="ruzhustate" property="ruzhustate"/>
+	</resultMap>
+	
+	<select id="customizeSelectByRoomRuZhu" resultMap="roomRuZhuMap">
+		select * from roomRuZhu rz,rooms r
+		${ew.customSqlSegment}
+		and rz.roomId=r.roomId
+		order by rz.roomRuZhuId ASC
+	</select>
+</mapper>
