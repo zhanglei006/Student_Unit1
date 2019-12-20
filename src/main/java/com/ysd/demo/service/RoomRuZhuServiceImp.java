@@ -121,9 +121,9 @@ public class RoomRuZhuServiceImp implements RoomRuZhuService{
 		QueryWrapper<RoomReservation> queryWrapper2 = new QueryWrapper<RoomReservation>();
 		queryWrapper2.eq("roomId", roomId);
 		List<RoomReservation> selectList2 = roomReservationMapper.selectList(queryWrapper2);
-		roomReservationMapper.deleteById(selectList2.get(0).getReservationId());
-		
-		
+		if(selectList2.size()>0) {
+			roomReservationMapper.deleteById(selectList2.get(0).getReservationId());
+		}
 		return updateById;
 	}
 	

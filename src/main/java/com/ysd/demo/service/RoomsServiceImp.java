@@ -52,6 +52,12 @@ public class RoomsServiceImp implements RoomsService{
 	@Override
 	public Integer insertRooms(Rooms rooms) {
 		// TODO Auto-generated method stub
+		QueryWrapper<Rooms> queryWrapper3 = new QueryWrapper<Rooms>();
+		queryWrapper3.eq("roommun", rooms.getRoommun());
+		List<Rooms> selectList2 = roomsMapper.selectList(queryWrapper3);
+		if(selectList2.size()!=0) {
+			return -1;
+		}
 		rooms.setIsFree(0);
 		int insert = roomsMapper.insert(rooms);
 		QueryWrapper<Rooms> queryWrapper = new QueryWrapper<Rooms>();
@@ -79,14 +85,27 @@ public class RoomsServiceImp implements RoomsService{
 	public Integer deleteRooms(String roomIds) {
 		String[] split = roomIds.split(",");
 		List<String> asList = Arrays.asList(split);
-		// TODO Auto-generated method stub
-		QueryWrapper<Pictures> queryWrapper = new QueryWrapper<Pictures>();
-		queryWrapper.in("roomId", asList);
-		List<Pictures> selectList = picturesMapper.selectList(queryWrapper);
-		for(int i=0;i<selectList.size();i++) {
-			picturesMapper.deleteById(selectList.get(i).getPicturesId());
+		QueryWrapper<Rooms> queryWrapper1 = new QueryWrapper<Rooms>();
+		Integer n = 0;
+		for(int i=0;i<asList.size();i++) {
+			queryWrapper1.eq("IsFree", 1)
+						.eq("roomId", asList.get(i));
+			List<Rooms> selectList = roomsMapper.selectList(queryWrapper1);
+			if(selectList.size()>0) {
+				n=1;
+			}
 		}
-		return roomsMapper.deleteBatchIds(asList);
+		if(n==1) {
+			return -1;
+		}else {
+			QueryWrapper<Pictures> queryWrapper = new QueryWrapper<Pictures>();
+			queryWrapper.in("roomId", asList);
+			List<Pictures> selectList = picturesMapper.selectList(queryWrapper);
+			for(int i=0;i<selectList.size();i++) {
+				picturesMapper.deleteById(selectList.get(i).getPicturesId());
+			}
+			return roomsMapper.deleteBatchIds(asList);
+		}
 	}
 
 	@Override
